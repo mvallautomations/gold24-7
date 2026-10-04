@@ -1,0 +1,107 @@
+# GOLD24-7 Phase 2 Research Baseline Configuration
+# Benchmark Strategy: M1_Pullback_Benchmark_EA
+# Environment: SIMULATION_ONLY / PAPER_TRADING_ONLY
+
+system:
+  project: "GOLD24-7"
+  phase: "Phase 2 - Edge Hypothesis Testing & Strategy Validation"
+  version: "2.0.0-research"
+  git_branch: "main"
+  operating_environment: "PAPER"
+  is_simulation_only: true
+  live_execution_permitted: false
+
+instruments:
+  primary:
+    requested_symbol: "XAUUSD"
+    broker_symbol: "GAUUSD"
+    broker: "XM"
+    digits: 3
+    point: 0.001
+    tick_size: 0.001
+    tick_value: 1.0
+    contract_size: 100.0
+    spread_points: 15
+    slippage_points: 1.5
+    fee_per_lot: 3.50
+  secondary_comparisons:
+    - requested_symbol: "XAUUSD"
+      broker_symbol: "XAUUSD"
+      broker: "Standard"
+      digits: 2
+      point: 0.01
+      tick_size: 0.01
+      contract_size: 100.0
+      spread_points: 25
+      slippage_points: 2.0
+      fee_per_lot: 0.00
+    - requested_symbol: "BTCUSD"
+      broker_symbol: "BTCUSD"
+      broker: "XM"
+      digits: 2
+      point: 0.01
+      tick_size: 0.01
+      contract_size: 1.0
+      spread_points: 50
+      slippage_points: 3.0
+      fee_per_lot: 0.00
+
+timeframes:
+  execution: "M1"
+  confirmation: ["M5", "M15"]
+  macro_context: ["H1", "H4", "D1"]
+  bar_indexing:
+    active_candle: "shift=0 (CURRENT_FORMING_BAR)"
+    signal_evaluation: "shift=1 (COMPLETED_BAR)"
+    impulse_context: "shift=2 (COMPLETED_BAR)"
+
+strategy_rules:
+  benchmark_ea: "core/M1_Pullback_Benchmark_EA.mq5"
+  evaluator: "core.signals.evaluator.SignalEvaluator"
+  symmetry: "Full BUY / SELL mathematical symmetry"
+  entry_logic:
+    bullish:
+      impulse: "c2 > o2 and (c2 - o2) > 0.8 * ATR"
+      pullback: "c1 < c2 and c1 > (o2 + c2) / 2"
+      trigger_close: "c1 is bullish and shift=1"
+    bearish:
+      impulse: "c2 < o2 and (o2 - c2) > 0.8 * ATR"
+      pullback: "c1 > c2 and c1 < (o2 + c2) / 2"
+      trigger_close: "c1 is bearish and shift=1"
+  stop_loss_methodology:
+    formula: "max(abs(close - bar_extreme) + (0.2 * ATR), 1.0 * ATR)"
+    hard_sl_bound_min: "0.5 * ATR"
+    hard_sl_bound_max: "4.0 * ATR"
+  take_profit_methodology:
+    fixed_reward_ratio: 1.5
+    min_reward_ratio: 1.2
+    max_reward_ratio: 5.0
+
+volatility_engine:
+  indicator: "ATR(14)"
+  distribution_lookback: 100
+  tradable_percentiles:
+    min: 0.20  # Rejects VERY_LOW
+    max: 0.85  # Rejects EXTREME
+
+support_resistance_engine:
+  swing_window: 3
+  cluster_tolerance_pct: 0.002
+  min_touch_count: 2
+  strength_score_threshold: 0.40
+
+deterministic_validator:
+  max_account_risk_pct: 1.0
+  max_concurrent_positions: 1
+  max_spread_points: 50
+  rules_count: 10
+  enforces_rule_9_veto: true
+
+execution_safety:
+  circuit_breaker:
+    max_daily_drawdown_pct: 3.0
+    max_consecutive_losses: 4
+    max_open_positions: 2
+  live_safety_boundary:
+    live_adapter_class: "LiveBrokerAdapterDisabled"
+    exception_on_send: "LiveExecutionForbiddenError"

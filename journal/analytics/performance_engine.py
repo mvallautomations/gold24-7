@@ -8,6 +8,9 @@ import numpy as np
 from core.models.trade import PaperPosition
 
 
+from journal.analytics.r_multiple import RMultipleAnalyzer
+
+
 class PerformanceEngine:
     """
     Computes institutional performance metrics across closed paper trades.
@@ -16,7 +19,7 @@ class PerformanceEngine:
     @staticmethod
     def calculate_metrics(positions: List[PaperPosition], initial_balance: float = 10000.0) -> Dict[str, Any]:
         if not positions:
-            return {
+            base_metrics = {
                 "total_trades": 0,
                 "win_rate_pct": 0.0,
                 "profit_factor": 1.0,
@@ -27,6 +30,9 @@ class PerformanceEngine:
                 "expectancy": 0.0,
                 "error_analysis": {},
             }
+            r_metrics = RMultipleAnalyzer.analyze_positions(positions, initial_balance)
+            base_metrics["r_metrics"] = r_metrics
+            return base_metrics
 
         pnls = [p.realized_pnl for p in positions]
         wins = [p for p in positions if p.realized_pnl > 0]
@@ -71,6 +77,8 @@ class PerformanceEngine:
             reason = p.exit_reason or "UNKNOWN"
             error_counts[reason] = error_counts.get(reason, 0) + 1
 
+        r_analysis = RMultipleAnalyzer.analyze_positions(positions, initial_balance)
+
         return {
             "total_trades": len(positions),
             "win_rate_pct": round(win_rate, 2),
@@ -81,4 +89,5 @@ class PerformanceEngine:
             "average_trade_pnl": round(avg_trade, 2),
             "expectancy": round(expectancy, 2),
             "error_analysis": error_counts,
+            "r_metrics": r_analysis,
         }

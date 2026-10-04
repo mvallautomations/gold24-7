@@ -4,6 +4,7 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
+import json
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -91,6 +92,25 @@ async def evaluate_market(symbol: str = "XAUUSD"):
     return latest_state
 
 
+@app.get("/api/research/latest")
+async def get_latest_research():
+    res_path = ROOT_DIR / "docs" / "research" / "phase2_results.json"
+    if res_path.exists():
+        with open(res_path, "r") as f:
+            return json.load(f)
+    return {"status": "NO_RUN_FOUND", "message": "Run scripts/run_phase2_validation.py first"}
+
+
+@app.get("/api/research/regimes")
+async def get_regimes_summary():
+    res_path = ROOT_DIR / "docs" / "research" / "phase2_results.json"
+    if res_path.exists():
+        with open(res_path, "r") as f:
+            data = json.load(f)
+            return data.get("regimes", {})
+    return {}
+
+
 @app.get("/api/backtest")
 async def run_backtest(symbol: str = "XAUUSD"):
     resolution = resolver.resolve(symbol)
@@ -102,7 +122,7 @@ async def run_backtest(symbol: str = "XAUUSD"):
 
 @app.get("/", response_class=HTMLResponse)
 async def serve_dashboard():
-    with open("/home/vall/m-2nd-brain/code/gold24-7/dashboard/templates/index.html", "r") as f:
+    with open(ROOT_DIR / "dashboard" / "templates" / "index.html", "r") as f:
         return f.read()
 
 

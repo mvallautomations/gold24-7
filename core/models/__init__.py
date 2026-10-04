@@ -11,6 +11,8 @@ from core.models.signal import (
 )
 from core.models.trade import PaperOrder, PaperPosition, PositionSide, TradeStatus
 
+from core.models.candidate import CandidateSetup, DecisionType, CounterfactualOutcome
+
 __all__ = [
     "Bar",
     "BarShift",
@@ -32,4 +34,7 @@ __all__ = [
     "PaperPosition",
     "PositionSide",
     "TradeStatus",
+    "CandidateSetup",
+    "DecisionType",
+    "CounterfactualOutcome",
 ]
