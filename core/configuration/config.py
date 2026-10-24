@@ -19,9 +19,9 @@ class AppConfig(BaseSettings):
     DEFAULT_SYMBOLS: List[str] = ["XAUUSD", "GAUUSD", "BTCUSD", "ETHUSD"]
 
     # MT5 / MCP Connection
-    MT5_MCP_SERVER_URL: str = "http://172.26.144.1:8080/sse"
+    MT5_MCP_SERVER_URL: str = "http://172.26.144.1:8082"
     MT5_HOST: str = "172.26.144.1"
-    MT5_PORT: int = 8080
+    MT5_PORT: int = 8082
 
     # Hermes 3 LLM (Ollama)
     OLLAMA_BASE_URL: str = "http://127.0.0.1:11434"
@@ -30,7 +30,7 @@ class AppConfig(BaseSettings):
 
     # OpenTraderWorld Integration
     OTW_BASE_URL: str = "http://127.0.0.1:5454"
-    OTW_DATABASE_URL: str = "postgres://otw:ffec9865bcfd7b23553814d390129df4d7440334657d9b4d@172.28.53.3:5432/opentraderworld"
+    OTW_DATABASE_URL: str = "postgres://otw:ffec9865bcfd7b23553814d390129df4d7440334657d9b4d@172.28.53.2:5432/opentraderworld"
     OTW_DEFAULT_CATEGORY_ID: str = "e170b267-7875-4afb-9f71-4abbc1f7cd52"
 
     # Risk Management & Paper Trading

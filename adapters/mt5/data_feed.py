@@ -41,6 +41,13 @@ class MT5DataFeed:
         # If live MT5 MCP is connected, retrieve live rates
         is_live = await self.mcp_client.ping()
         if is_live:
+            if not self.resolver.active_mt5_symbols:
+                live_symbols = await self.mcp_client.get_symbols()
+                if live_symbols:
+                    self.resolver.update_mt5_symbol_cache(live_symbols)
+                    resolution = self.resolver.resolve(requested_symbol)
+                    resolved_sym = resolution.resolved
+
             bars_by_tf = {}
             for tf in [Timeframe.D1, Timeframe.H4, Timeframe.H1, Timeframe.M15, Timeframe.M5, Timeframe.M1]:
                 raw_rates = await self.mcp_client.get_rates(resolved_sym, tf.value, count=100)

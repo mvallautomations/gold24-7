@@ -13,7 +13,7 @@ def test_resolver_xm_defaults():
     # XAUUSD on XM resolves to GAUUSD
     res_gold = resolver.resolve("XAUUSD")
     assert res_gold.requested == "XAUUSD"
-    assert res_gold.resolved in ["GAUUSD", "XAUUSD"]
+    assert res_gold.resolved in ["GOLD#", "GOLD", "GAUUSD", "XAUUSD"]
     assert res_gold.broker == "XM"
     assert res_gold.digits == 2
     assert res_gold.point == 0.01
@@ -21,7 +21,7 @@ def test_resolver_xm_defaults():
     # BTCUSD on XM
     res_btc = resolver.resolve("BTCUSD")
     assert res_btc.requested == "BTCUSD"
-    assert res_btc.resolved in ["BTCUSD", "BTCUSD.m", "BITCOIN"]
+    assert res_btc.resolved in ["BTCUSD#", "BTCUSD", "BTCUSD.m", "BITCOIN"]
     assert res_btc.digits == 2
 
 

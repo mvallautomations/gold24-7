@@ -44,7 +44,8 @@ class LLMInterpretation(BaseModel):
     confidence_score: float = Field(default=0.0, description="Confidence 0.0 to 1.0")
     reasoning: str = Field(default="", description="Hermes 3 contextual analysis")
     critique: str = Field(default="", description="Hermes 3 risk warnings and trade counter-arguments")
-    recommended_action: str = Field(default="WATCH", description="ENTER_PAPER | WATCH | SKIP")
+    recommended_action: str = Field(default="STAND_ASIDE", description="EXECUTE_LIVE | MITIGATE_LOSSES | PROTECT_CAPITAL | STAND_ASIDE | TRIM_EXPOSURE")
+    loss_mitigation_plan: Optional[str] = Field(default=None, description="Tactical loss mitigation directives for open trades")
     psychological_check: str = Field(default="", description="ADHD/Emotional guardrail prompt")
 
 

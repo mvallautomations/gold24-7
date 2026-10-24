@@ -81,7 +81,7 @@ class HermesClient:
         return json.dumps({
             "confidence_score": 0.70,
             "reasoning": "Deterministic pattern matched: M1 impulse pullback with favorable higher-timeframe alignment.",
-            "critique": "Watch for spread widening near session transitions; enforce hard stop loss.",
-            "recommended_action": "ENTER_PAPER",
-            "psychological_check": "Stick to the predefined plan. No discretionary sizing adjustments."
+            "critique": "Enforce strict capital preservation; protect live account equity against adverse expansion.",
+            "recommended_action": "PROTECT_CAPITAL",
+            "psychological_check": "Protect your real capital first. Cut losing exposure before it compounds."
         })

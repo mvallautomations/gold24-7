@@ -18,7 +18,7 @@ def test_full_pipeline_smoke():
     # 1. Resolve Symbol
     resolver = BrokerSymbolResolver(broker="XM")
     res = resolver.resolve("XAUUSD")
-    assert res.resolved in ["GAUUSD", "XAUUSD"]
+    assert res.resolved in ["GOLD#", "GOLD", "GAUUSD", "XAUUSD"]
 
     # 2. Generate Market Data
     tf_data = MarketDataGenerator.generate_multitimeframe_suite(symbol=res.resolved, start_price=2650.0)

@@ -18,19 +18,37 @@ class MT5MCPClient:
     """
 
     def __init__(self, base_url: Optional[str] = None):
-        self.base_url = (base_url or config.MT5_MCP_SERVER_URL).rstrip("/")
+        url = (base_url or config.MT5_MCP_SERVER_URL).rstrip("/")
+        if url.endswith("/sse"):
+            url = url[:-4]
+        self.base_url = url
         self.is_connected = False
 
     async def ping(self) -> bool:
         """Check if MT5 MCP server is reachable."""
-        try:
-            async with httpx.AsyncClient(timeout=2.0) as client:
-                res = await client.get(f"{self.base_url}/health")
-                self.is_connected = (res.status_code == 200)
-                return self.is_connected
-        except Exception:
-            self.is_connected = False
-            return False
+        candidate_urls = [self.base_url]
+        # Allow fallback between gateway IP and localhost
+        if "172." in self.base_url:
+            import re
+            localhost_url = re.sub(r"https?://172\.[0-9.]+", "http://127.0.0.1", self.base_url)
+            if localhost_url not in candidate_urls:
+                candidate_urls.append(localhost_url)
+        elif "127.0.0.1" in self.base_url or "localhost" in self.base_url:
+            candidate_urls.append(f"http://{config.MT5_HOST}:{config.MT5_PORT}")
+
+        for url in candidate_urls:
+            try:
+                async with httpx.AsyncClient(timeout=2.0) as client:
+                    res = await client.get(f"{url}/health")
+                    if res.status_code == 200:
+                        self.base_url = url
+                        self.is_connected = True
+                        return True
+            except Exception:
+                continue
+
+        self.is_connected = False
+        return False
 
     async def get_symbols(self) -> List[str]:
         """Fetch available instrument universe from MT5."""

@@ -32,7 +32,16 @@ class OTWJournalIngestion:
         self.category_id = category_id or config.OTW_DEFAULT_CATEGORY_ID
 
     def get_connection(self):
-        return psycopg2.connect(self.db_url)
+        try:
+            return psycopg2.connect(self.db_url, connect_timeout=3)
+        except Exception:
+            if "172.28.53.2" in self.db_url:
+                alt = self.db_url.replace("172.28.53.2", "172.28.53.3")
+                return psycopg2.connect(alt, connect_timeout=3)
+            elif "172.28.53.3" in self.db_url:
+                alt = self.db_url.replace("172.28.53.3", "172.28.53.2")
+                return psycopg2.connect(alt, connect_timeout=3)
+            raise
 
     def ingest_closed_trade(self, position: PaperPosition, coach_feedback: str = "") -> Optional[str]:
         """

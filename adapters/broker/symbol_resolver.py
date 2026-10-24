@@ -36,10 +36,13 @@ class BrokerSymbolResolver:
 
     # Known broker alias candidates (tried in order)
     CANONICAL_ALIASES: Dict[str, List[str]] = {
-        "XAUUSD": ["XAUUSD", "GAUUSD", "GOLD", "GOLDmicro", "XAUUSD.m", "XAUUSDm", "XAUUSDraw"],
-        "GAUUSD": ["GAUUSD", "XAUUSD", "GOLD", "GOLDmicro"],
-        "BTCUSD": ["BTCUSD", "BTCUSD.m", "BITCOIN", "BTCUSDmicro", "BTCUSDT"],
-        "ETHUSD": ["ETHUSD", "ETHUSD.m", "ETHEREUM", "ETHUSDmicro", "ETHUSDT"],
+        "XAUUSD": ["GOLD#", "GOLD", "XAUUSD", "GOLDmicro", "GAUUSD", "XAUUSD.m", "XAUUSDm", "XAUUSDraw"],
+        "GOLD": ["GOLD#", "GOLD", "XAUUSD", "GOLDmicro", "GAUUSD"],
+        "GOLD#": ["GOLD#", "GOLD", "XAUUSD", "GOLDmicro", "GAUUSD"],
+        "GAUUSD": ["GAUUSD", "GOLD#", "GOLD", "XAUUSD", "GOLDmicro"],
+        "BTCUSD": ["BTCUSD#", "BTCUSD", "BTCUSD.m", "BITCOIN", "BTCUSDmicro", "BTCUSDT"],
+        "BTCUSD#": ["BTCUSD#", "BTCUSD", "BTCUSD.m", "BITCOIN"],
+        "ETHUSD": ["ETHUSD#", "ETHUSD", "ETHUSD.m", "ETHEREUM", "ETHUSDmicro", "ETHUSDT"],
         "EURUSD": ["EURUSD", "EURUSD.m", "EURUSDm", "EURUSDmicro"],
         "GBPUSD": ["GBPUSD", "GBPUSD.m", "GBPUSDm", "GBPUSDmicro"],
         "USDJPY": ["USDJPY", "USDJPY.m", "USDJPYm", "USDJPYmicro"],
@@ -48,9 +51,12 @@ class BrokerSymbolResolver:
     # Default specifications for standard instruments when running offline/paper
     DEFAULT_SPECS: Dict[str, Dict[str, Any]] = {
         "XAUUSD": {"digits": 2, "point": 0.01, "tick_size": 0.01, "tick_value": 1.0, "min_lot": 0.01, "max_lot": 50.0, "lot_step": 0.01, "spread_points": 25},
+        "GOLD": {"digits": 2, "point": 0.01, "tick_size": 0.01, "tick_value": 1.0, "min_lot": 0.01, "max_lot": 50.0, "lot_step": 0.01, "spread_points": 25},
+        "GOLD#": {"digits": 2, "point": 0.01, "tick_size": 0.01, "tick_value": 1.0, "min_lot": 0.01, "max_lot": 50.0, "lot_step": 0.01, "spread_points": 25},
         "GAUUSD": {"digits": 2, "point": 0.01, "tick_size": 0.01, "tick_value": 1.0, "min_lot": 0.01, "max_lot": 50.0, "lot_step": 0.01, "spread_points": 30},
-        "BTCUSD": {"digits": 2, "point": 0.01, "tick_size": 0.01, "tick_value": 1.0, "min_lot": 0.01, "max_lot": 20.0, "lot_step": 0.01, "spread_points": 250},
-        "ETHUSD": {"digits": 2, "point": 0.01, "tick_size": 0.01, "tick_value": 1.0, "min_lot": 0.01, "max_lot": 50.0, "lot_step": 0.01, "spread_points": 50},
+        "BTCUSD": {"digits": 2, "point": 0.01, "tick_size": 0.01, "tick_value": 0.01, "min_lot": 0.01, "max_lot": 80.0, "lot_step": 0.01, "spread_points": 1500},
+        "BTCUSD#": {"digits": 2, "point": 0.01, "tick_size": 0.01, "tick_value": 0.01, "min_lot": 0.01, "max_lot": 80.0, "lot_step": 0.01, "spread_points": 1500},
+        "ETHUSD": {"digits": 2, "point": 0.01, "tick_size": 0.01, "tick_value": 0.01, "min_lot": 0.01, "max_lot": 50.0, "lot_step": 0.01, "spread_points": 50},
     }
 
     def __init__(self, broker: str = "XM", active_mt5_symbols: Optional[List[str]] = None):
@@ -89,10 +95,12 @@ class BrokerSymbolResolver:
 
         # 2. Offline / Paper fallback: Resolve canonical alias by broker default
         alias_list = self.CANONICAL_ALIASES.get(req_clean, [req_clean])
-        # If broker is XM and requested XAUUSD, prefer GAUUSD or XAUUSD
         resolved_name = alias_list[0]
-        if self.broker == "XM" and req_clean == "XAUUSD" and "GAUUSD" in alias_list:
-            resolved_name = "GAUUSD"
+        if self.broker == "XM":
+            if req_clean in ("XAUUSD", "GOLD", "GOLD#"):
+                resolved_name = "GOLD#" if "GOLD#" in self.active_mt5_symbols else ("GOLD" if "GOLD" in self.active_mt5_symbols else "GOLD#")
+            elif req_clean in ("BTCUSD", "BTCUSD#"):
+                resolved_name = "BTCUSD#"
 
         return self._build_resolution(req_clean, resolved_name, "RESOLVED_DEFAULT")
 
