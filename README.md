@@ -181,9 +181,18 @@ gold24-7/
 
 ## 4. Quickstart Guide
 
-### Activate Virtual Environment
+### Run in Docker (preferred)
 ```bash
-cd code/gold24-7
+cd ~/dev/gold24-7
+docker compose up -d dashboard          # http://localhost:8585
+docker compose --profile daemon up -d   # adds scripts/daemon_runner.py (paper trading only)
+docker compose run --rm dashboard pytest
+```
+The Windows MT5 bridge stays on the host; containers reach it at `host.docker.internal`.
+
+### Activate Virtual Environment (editor tooling only)
+```bash
+cd ~/dev/gold24-7
 source .venv/bin/activate
 ```
 

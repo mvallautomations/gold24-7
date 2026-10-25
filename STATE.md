@@ -47,8 +47,9 @@ Phase 2: Full Architecture Implemented, Verified, & Deployed
 - **Host OS**: Linux (WSL2 Ubuntu 24.04 on Windows 11 Legion)
 - **GPU**: NVIDIA RTX 4060 Laptop (8 GB VRAM) active via CUDA 13.2 / Ollama daemon
 - **Python**: Python 3.12.3 in dedicated `.venv/`
+- **Location**: `~/dev/gold24-7` (moved out of the vault 2026-10-25). This repo has its own `docker-compose.yml`: `docker compose up -d dashboard` serves 8585.
 - **Docker**: OpenTraderWorld stack running (PostgreSQL 18 at `172.28.53.3:5432`, Core API at `:5454`)
-- **Dashboard**: Running on `http://localhost:8585`
+- **Dashboard**: `http://localhost:8585` (host process or the `dashboard` compose service; do not run both)
 
 ## Test Status
 - `pytest`: **14 / 14 tests passing** (unit, contract, smoke).
