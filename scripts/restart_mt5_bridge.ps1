@@ -4,8 +4,8 @@ if ($null -ne $conn) {
     Write-Host "Killed previous bridge process"
 }
 Start-Sleep -Seconds 1
-Start-Process "C:\Users\Legion\AppData\Local\Programs\Python\Python313\python.exe" -ArgumentList "\\wsl.localhost\Ubuntu\home\vall\m-2nd-brain\code\gold24-7\scripts\mt5_bridge_server.py" -WindowStyle Hidden
-Start-Sleep -Seconds 2
+Start-Process "C:\Users\Legion\AppData\Local\Programs\Python\Python313\python.exe" -ArgumentList "C:\Users\Legion\mt5_bridge\mt5_bridge_server.py" -WindowStyle Hidden
+Start-Sleep -Seconds 3
 $newConn = Get-NetTCPConnection -LocalPort 8082 -State Listen -ErrorAction SilentlyContinue
 if ($null -ne $newConn) {
     Write-Host "MT5 Bridge successfully listening on port 8082 (PID: $($newConn.OwningProcess))"

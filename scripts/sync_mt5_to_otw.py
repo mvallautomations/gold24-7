@@ -12,10 +12,11 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-# Ensure virtual environment execution
-venv_python = ROOT_DIR / ".venv" / "bin" / "python"
-if sys.prefix == sys.base_prefix and venv_python.exists():
-    os.execv(str(venv_python), [str(venv_python)] + sys.argv)
+# Ensure virtual environment execution when run as standalone script
+if __name__ == "__main__":
+    venv_python = ROOT_DIR / ".venv" / "bin" / "python"
+    if sys.prefix == sys.base_prefix and venv_python.exists() and "-c" not in sys.argv:
+        os.execv(str(venv_python), [str(venv_python)] + sys.argv)
 
 import re
 import uuid
@@ -166,13 +167,13 @@ class MT5ToOTWSync:
         unrealized_pnl = sum(p.get("unrealized_pnl", 0) for p in open_pos)
 
         return {
-            "account_login": acc.get("login", 335537672),
+            "account_login": acc.get("login", 336888981),
             "server": acc.get("server", "XMGlobal-MT5 9"),
             "company": acc.get("company", "XM Global Limited"),
-            "leverage": acc.get("leverage", 1000),
+            "leverage": acc.get("leverage", 100),
             "currency": acc.get("currency", "USD"),
-            "balance": acc.get("balance", 87.09),
-            "equity": acc.get("equity", 61.55),
+            "balance": acc.get("balance", 1874.19),
+            "equity": acc.get("equity", 1874.19),
             "total_closed_trades": total_trades,
             "win_rate": round(win_rate, 1),
             "profit_factor": round(profit_factor, 2),
@@ -311,7 +312,7 @@ class MT5ToOTWSync:
                     fields = {
                         "environment": "LIVE_ACCOUNT",
                         "broker": "XM Global",
-                        "account_id": str(self.account_login or "335537672"),
+                        "account_id": str(self.account_login or "336888981"),
                         "position_id": t["position_id"],
                         "realized_pnl": t["net_pnl"],
                         "net_pnl": t["net_pnl"],

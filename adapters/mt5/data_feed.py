@@ -30,7 +30,8 @@ class MT5DataFeed:
 
     async def get_multitimeframe_bars(
         self,
-        requested_symbol: str
+        requested_symbol: str,
+        bars_per_tf: int = 100
     ) -> Dict[Timeframe, List[Bar]]:
         """
         Fetch all 6 canonical timeframes (D1, H4, H1, M15, M5, M1) for requested symbol.
@@ -50,7 +51,7 @@ class MT5DataFeed:
 
             bars_by_tf = {}
             for tf in [Timeframe.D1, Timeframe.H4, Timeframe.H1, Timeframe.M15, Timeframe.M5, Timeframe.M1]:
-                raw_rates = await self.mcp_client.get_rates(resolved_sym, tf.value, count=100)
+                raw_rates = await self.mcp_client.get_rates(resolved_sym, tf.value, count=bars_per_tf)
                 if raw_rates:
                     bars_by_tf[tf] = self._parse_rates(raw_rates)
             if len(bars_by_tf) == 6:

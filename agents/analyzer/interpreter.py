@@ -22,7 +22,7 @@ from agents.hermes.client import HermesClient
 logger = logging.getLogger(__name__)
 
 
-SYSTEM_PROMPT = """You are Hermes 3, an elite quantitative trading mentor, risk manager, and loss mitigation critic for a REAL LIVE trading account (XMGlobal-MT5 9, Login: 335537672, Leverage: 1:1000).
+SYSTEM_PROMPT = """You are Hermes 3, an elite quantitative trading mentor, risk manager, and loss mitigation critic for a live XM MT5 trading account (XMGlobal-MT5 9, Login: 336888981, Leverage: 1:100).
 Your core directives:
 1. Real money is on the line. NEVER mention "paper", "paper account", "virtual capital", or "ENTER_PAPER".
 2. Prioritize capital preservation, mitigating floating drawdown on live open positions, and cutting toxic exposure.
@@ -73,8 +73,9 @@ class HermesMarketInterpreter:
             for p in open_positions:
                 pos_context += f"- {p.get('side')} {p.get('lots', 0.01)} {p.get('symbol')} @ {p.get('entry_price')} (SL: {p.get('stop_loss', 0.0)}, Float PnL: ${p.get('unrealized_pnl', 0.0)})\n"
 
+        acc_login = (account_stats or {}).get("account_login", "336888981")
         prompt = f"""
-ANALYZE CANDIDATE SETUP FOR LIVE ACCOUNT 335537672:
+ANALYZE CANDIDATE SETUP FOR XM MT5 ACCOUNT {acc_login}:
 - Symbol: {signal.symbol_resolved} (Broker: {signal.broker_name})
 - Direction: {signal.direction.value}
 - Setup: {signal.setup.value}
@@ -172,12 +173,14 @@ Evaluate setup quality and loss mitigation in valid JSON adhering to schema:
 
         acc_summary = ""
         if account_stats:
-            bal = account_stats.get("balance", 87.09)
-            eq = account_stats.get("equity", 55.0)
+            bal = account_stats.get("balance", 1874.19)
+            eq = account_stats.get("equity", 1874.19)
             unrl = account_stats.get("unrealized_pnl", 0.0)
-            acc_summary = f"\nLive Account Metrics: Balance: ${bal:.2f}, Equity: ${eq:.2f}, Total Floating PnL: ${unrl:.2f} (Leverage 1:1000)"
+            acc_num = account_stats.get("account_login", "336888981")
+            acc_summary = f"\nXM MT5 Account Metrics: Balance: ${bal:.2f}, Equity: ${eq:.2f}, Total Floating PnL: ${unrl:.2f} (Leverage 1:100)"
 
-        prompt = f"""You are Hermes 3, elite quantitative mentor and loss mitigation risk manager for real live MT5 account 335537672.
+        acc_num = (account_stats or {}).get("account_login", "336888981")
+        prompt = f"""You are Hermes 3, elite quantitative mentor and loss mitigation risk manager for XM MT5 account {acc_num}.
 Analyze the live market state and open trades for {symbol_res.resolved} ({symbol_res.requested}, Broker: {symbol_res.broker}):
 - Live Current Price: {curr_price}
 - Macro Bias (D1/H4): {state.macro_bias.value}
@@ -307,25 +310,26 @@ Output strictly valid JSON with this exact structure:
         """
         Specialized audit of open live positions to formulate concrete loss mitigation instructions.
         """
+        acc_num = account_stats.get("account_login", "336888981") if account_stats else "336888981"
         if not open_positions:
             return {
                 "risk_level": "STABLE",
                 "drawdown_pct": 0.0,
                 "net_exposure": "FLAT",
-                "summary": "No active open positions on live account 335537672. Full capital protected.",
+                "summary": f"No active open positions on XM MT5 account {acc_num}. Full capital protected.",
                 "tactical_steps": ["Maintain discipline; await high-confluence mathematical setups."],
                 "recommended_action": "STAND_ASIDE",
                 "psychological_guardrail": "Flat is a valid and profitable position when no high-probability edge exists."
             }
 
-        bal = account_stats.get("balance", 87.09)
-        eq = account_stats.get("equity", 55.0)
+        bal = account_stats.get("balance", 1874.19)
+        eq = account_stats.get("equity", 1874.19)
         unrl = account_stats.get("unrealized_pnl", 0.0)
         drawdown_pct = abs(unrl / bal * 100.0) if bal > 0 and unrl < 0 else 0.0
 
         pos_lines = []
         for p in open_positions:
-            sym = p.get("symbol", "GOLD#")
+            sym = p.get("symbol", "GOLD")
             side = p.get("side", "BUY")
             lots = p.get("lots") or p.get("quantity_lots", 0.01)
             entry = p.get("entry_price", 0.0)
@@ -338,7 +342,7 @@ Output strictly valid JSON with this exact structure:
                 f"- Ticket {tkt}: {side} {lots} {sym} @ ${entry:.2f}, Cur: ${cur_p:.2f}, SL: ${sl:.2f}, TP: ${tp:.2f}, PnL: ${pnl:.2f}"
             )
 
-        prompt = f"""You are Hermes 3, elite quantitative risk manager and turnaround specialist for a REAL LIVE XM MT5 account (Login: 335537672, Leverage: 1:1000).
+        prompt = f"""You are Hermes 3, elite quantitative risk manager and turnaround specialist for XM MT5 account (Login: {acc_num}, Leverage: 1:100).
 Current live balance: ${bal:.2f}, Equity: ${eq:.2f}, Floating PnL: ${unrl:.2f} ({drawdown_pct:.1f}% drawdown).
 Active open positions:
 {chr(10).join(pos_lines)}
