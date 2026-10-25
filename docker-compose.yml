@@ -1,0 +1,30 @@
+# Run from this folder: docker compose up -d
+# The MT5 bridge (scripts/mt5_bridge_server.py) stays on Windows; containers reach it via host.docker.internal.
+x-gold: &gold
+  build: .
+  volumes:
+    - ./:/workspace
+    # Mask the host .venv so daemon_runner.py does not exec a host interpreter inside the container.
+    - /workspace/.venv
+  env_file:
+    - path: .env
+      required: false
+  environment:
+    ENVIRONMENT: paper
+    ALLOW_LIVE_EXECUTION: "false"
+    IS_SIMULATION_ONLY: "true"
+    MT5_HOST: host.docker.internal
+    OLLAMA_BASE_URL: http://host.docker.internal:11434
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+
+services:
+  dashboard:
+    <<: *gold
+    ports:
+      - "8585:8585"
+
+  daemon:
+    <<: *gold
+    command: ["python", "scripts/daemon_runner.py"]
+    profiles: ["daemon"]

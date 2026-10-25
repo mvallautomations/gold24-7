@@ -6,3 +6,8 @@ __pycache__/
 *.log
 dist/
 build/
+
+# Large research binaries and editor backups (kept on disk, not versioned)
+docs/*.pdf
+docs/playbook_images/
+*.backup
