@@ -1,8 +1,23 @@
 {
-  "completed_items": [],
+  "completed_items": [
+    "B8",
+    "B7",
+    "B5",
+    "B2",
+    "B1",
+    "A1",
+    "A2",
+    "A3",
+    "A6",
+    "A7",
+    "A8",
+    "C2",
+    "C5",
+    "C6"
+  ],
   "decision": "WAIT / CONTINUE OBSERVING",
   "invalidation": "",
   "notes": "",
-  "symbol": "GOLD",
-  "timestamp": "2026-10-21T17:36:19.409Z"
+  "symbol": "GOLD#",
+  "timestamp": "2026-10-25T23:51:26.729Z"
 }

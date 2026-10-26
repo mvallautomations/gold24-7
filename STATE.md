@@ -47,23 +47,24 @@ Phase 2: Full Architecture Implemented, Verified, & Deployed
 - **Host OS**: Linux (WSL2 Ubuntu 24.04 on Windows 11 Legion)
 - **GPU**: NVIDIA RTX 4060 Laptop (8 GB VRAM) active via CUDA 13.2 / Ollama daemon
 - **Python**: Python 3.12.3 in dedicated `.venv/`
-- **Location**: `~/dev/gold24-7` (moved out of the vault 2026-10-25). This repo has its own `docker-compose.yml`: `docker compose up -d dashboard` serves 8585.
-- **Docker**: OpenTraderWorld stack running (PostgreSQL 18 at `172.28.53.3:5432`, Core API at `:5454`)
-- **Dashboard**: `http://localhost:8585` (host process or the `dashboard` compose service; do not run both)
+- **Location**: `~/dev/gold24-7`. Run: `.venv/bin/python -m uvicorn dashboard.server:app --host 0.0.0.0 --port 8585` or docker compose.
+- **Account**: XM MT5 Account `169588864` (`XMGlobal-MT5 2`, Leverage 1:500, Balance: $524.36, Equity: $514.17).
+- **Active Symbols**: `GOLD#` and `GOLD24-7#` (configured with live ticks, rates, and 24/7 schedules).
+- **MT5 Bridge**: Online on Windows host port 8082 (PID 25328).
+- **Dashboard**: `http://localhost:8585` (online, serving real-time MT5 stream and open positions).
 
 ## Test Status
-- `pytest`: **14 / 14 tests passing** (unit, contract, smoke).
-- End-to-end live pipeline with Hermes 3:8B on GPU: **VERIFIED PASS**.
-- OpenTraderWorld PostgreSQL insertion: **VERIFIED PASS**.
+- `pytest`: **55 / 55 tests passing** (unit, characterization, contract, smoke).
+- MT5 live tick & rate streaming for `GOLD#` and `GOLD24-7#`: **VERIFIED PASS**.
+- End-to-end dashboard API (`/api/status`, `/api/market-data`): **VERIFIED PASS**.
 
 ## Deployment Status
 - Research / Paper Trading Platform: **OPERATIONAL**.
 - Hard Safety Boundary: **STRICTLY ENFORCED** (Simulation only).
 
 ## Next Action
-1. User review of the research dashboard at `http://localhost:8585`.
-2. Expand walk-forward backtesting periods across longer historical CSV datasets.
-3. Connect MT5 MCP Bridge on Windows host whenever live MT5 tick streaming is desired.
+1. Review live cockpit at `http://localhost:8585`.
+2. Toggle between `GOLD#` and `GOLD24-7#` chips on the dashboard header.
 
 ## Blockers
-- None. System is fully operational and tested.
+- None. System is fully operational and streaming live data.

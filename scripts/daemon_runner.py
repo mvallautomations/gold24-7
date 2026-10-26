@@ -130,7 +130,7 @@ class AutonomousTradingDaemon:
         equity = acc_stats.get("equity", 0.0)
         open_positions = self.mt5_syncer.get_live_positions_formatted()
 
-        acc_login = acc_stats.get("account_login", "336888981")
+        acc_login = acc_stats.get("account_login", "169588864")
         console.print(f"Account {acc_login}: Balance=[bold green]${balance:.2f}[/bold green] | Equity=[bold]${equity:.2f}[/bold] | Open Trades=[bold]{len(open_positions)}[/bold]")
 
         # Check target profit halt
@@ -295,8 +295,8 @@ class AutonomousTradingDaemon:
 async def main():
     import argparse
     parser = argparse.ArgumentParser(description="GOLD24-7 Autonomous Trading Daemon")
-    parser.add_argument("--symbol", default="GOLD", help="Symbol to monitor and trade (default: GOLD)")
-    parser.add_argument("--live", action="store_true", help="Enable live execution on MT5 account (336888981)")
+    parser.add_argument("--symbol", default="GOLD#", help="Symbol to monitor and trade (default: GOLD#)")
+    parser.add_argument("--live", action="store_true", help="Enable live execution on MT5 account (169588864)")
     parser.add_argument("--target", type=float, default=2500.0, help="Profit target balance to auto-halt trading (default: 2500.0)")
     parser.add_argument("--circuit-breaker", type=float, default=1500.0, help="Circuit breaker minimum balance (default: 1500.0)")
     parser.add_argument("--interval", type=int, default=10, help="Evaluation interval in seconds (default: 10)")

@@ -16,7 +16,7 @@ class AppConfig(BaseSettings):
 
     # Broker & Symbol Resolver
     DEFAULT_BROKER: str = "XM"
-    DEFAULT_SYMBOLS: List[str] = ["XAUUSD", "GAUUSD", "BTCUSD", "ETHUSD"]
+    DEFAULT_SYMBOLS: List[str] = ["GOLD#", "GOLD24-7#", "BTCUSD#", "ETHUSD"]
 
     # MT5 / MCP Connection
     MT5_MCP_SERVER_URL: str = "http://172.26.144.1:8082"

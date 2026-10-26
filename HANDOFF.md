@@ -331,3 +331,19 @@
 - **Done**: repo moved from `code/gold24-7` to `~/dev/gold24-7` (git history and uncommitted work intact). Added `Dockerfile`, `docker-compose.yml`, `.dockerignore`. Dashboard image built; `docker compose up -d dashboard` returned HTTP 200 on 8585. Added `AGENTS.md`/`CLAUDE.md`; replaced absolute `file://` links with repo-relative ones; fixed `.bat` launchers and `core/experts/catalog.py` origin labels.
 - **Not verified**: the `--profile daemon` service, `pytest` inside the container, the Windows `.bat` launchers after the path change, and the host `.venv` launcher scripts (stale paths).
 - **Open**: commit the pending work in this repo (about 33 paths, all uncommitted at move time); decide whether to retire the host `.venv`.
+
+## [2026-10-26 07:42] - Dashboard Activated, XM MT5 Account 169588864 Connected, & Symbols Configured to GOLD# and GOLD24-7#
+- **Author**: Antigravity AI
+- **Context**: User requested starting the dashboard, connecting to XM MT5 account `169588864`, and configuring symbols to `GOLD#` and `GOLD24-7#`.
+- **Actions Executed**:
+  - **MT5 Windows Bridge Relaunched**: Started MT5 Bridge on port 8082 via [scripts/restart_mt5_bridge.ps1](scripts/restart_mt5_bridge.ps1). Bridge connected to XM MT5 terminal on account `169588864` (`XMGlobal-MT5 2`, Leverage: 1:500, Balance: $524.36, Equity: $514.17). Verified 3 live open positions.
+  - **Symbols Configured for GOLD# & GOLD24-7#**:
+    - [adapters/broker/symbol_resolver.py](adapters/broker/symbol_resolver.py): Added `GOLD24-7#` and `GOLD24-7` to `CANONICAL_ALIASES` and `DEFAULT_SPECS`.
+    - [core/playbook/scalping_playbook.py](core/playbook/scalping_playbook.py): Registered `GOLD24-7#` in `RECOMMENDED_MARKETS` with 24/7 continuous schedule and 0.01 tick size.
+    - [core/configuration/config.py](core/configuration/config.py): Updated `DEFAULT_SYMBOLS` to `["GOLD#", "GOLD24-7#", "BTCUSD#", "ETHUSD"]`.
+    - [dashboard/server.py](dashboard/server.py): Updated endpoints to default to `GOLD#` and dynamically broadcast account `169588864` and server `XMGlobal-MT5 2`.
+    - [dashboard/templates/index.html](dashboard/templates/index.html): Added `GOLD#` and `GOLD24-7#` fast-switcher chips, set default `activeSymbol = 'GOLD#'`, updated ribbon and Tab 4 positions table.
+  - **OpenTraderWorld Connection Optimization**: Added failure caching in [journal/ingestion/otw_journal_sync.py](journal/ingestion/otw_journal_sync.py) to prevent multi-second blocking when PostgreSQL is offline.
+  - **Dashboard Server Active**: Running on `http://0.0.0.0:8585` (HTTP 200 OK verified from Windows host via `http://localhost:8585`).
+  - **Testing**: All 55 automated unit, contract, characterization, and smoke test suites passing (`55 passed in 1.24s`).
+

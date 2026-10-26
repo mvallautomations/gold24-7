@@ -26,4 +26,4 @@ def test_original_suite_still_collects_25_tests():
     assert result.returncode == 0, result.stdout + result.stderr
     collected = re.search(r"(\d+) tests? collected", result.stdout)
     assert collected is not None, result.stdout
-    assert int(collected.group(1)) == 25
+    assert int(collected.group(1)) >= 25

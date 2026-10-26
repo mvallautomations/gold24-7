@@ -63,12 +63,12 @@ async def get_status():
         "is_simulation_only": False,
         "live_execution_permitted": False,
         "broker": stats.get("company", "XM Global Limited"),
-        "account_login": stats.get("account_login", 336888981),
-        "server": stats.get("server", "XMGlobal-MT5 9"),
+        "account_login": stats.get("account_login", 169588864),
+        "server": stats.get("server", "XMGlobal-MT5 2"),
         "currency": stats.get("currency", "USD"),
-        "leverage": stats.get("leverage", 100),
-        "balance": stats.get("balance", 1874.19),
-        "equity": stats.get("equity", 1874.19),
+        "leverage": stats.get("leverage", 500),
+        "balance": stats.get("balance", 524.36),
+        "equity": stats.get("equity", 524.36),
         "unrealized_pnl": stats.get("unrealized_pnl", 0.0),
         "open_positions": stats.get("open_positions_count", 0),
         "closed_positions": stats.get("total_closed_trades", 0),
@@ -249,8 +249,8 @@ async def get_market_data(symbol: str = "GOLD#"):
         "risk_level": risk_level,
         "server_time": datetime.now(timezone.utc).strftime("%H:%M:%S UTC"),
         "is_mt5_live": data_feed.mcp_client.is_connected,
-        "account_login": account_stats.get("account_login", 336888981),
-        "account_server": account_stats.get("server", "XMGlobal-MT5 9"),
+        "account_login": account_stats.get("account_login", 169588864),
+        "account_server": account_stats.get("server", "XMGlobal-MT5 2"),
         "is_live_account": True
     }
 
@@ -293,7 +293,7 @@ async def get_playbook_schedules():
 
 
 @app.get("/api/playbook/evaluate")
-async def evaluate_playbook_market(symbol: str = "GOLD"):
+async def evaluate_playbook_market(symbol: str = "GOLD#"):
     """
     Evaluates market data against the 1-Minute Scalping Playbook:
     15M ORH/ORL, 5M Confirmation Close, 1M Model A/B/C, 10-Point Scorecard, and Invariant 1:2 R:R.
@@ -326,7 +326,7 @@ async def evaluate_playbook_market(symbol: str = "GOLD"):
 
 
 @app.get("/api/playbook/m15-objects")
-async def get_playbook_m15_objects(symbol: str = "GOLD"):
+async def get_playbook_m15_objects(symbol: str = "GOLD#"):
     """
     Returns object indicators for the 15M opening entry timeframe:
     15M ORH/ORL Box geometry, boundary lines, 50% Equilibrium, and +1R/+2R expansion levels.
@@ -353,7 +353,7 @@ async def execute_playbook_order(request: Request):
     Executes a mirror / copy trade directly on MT5 with exact 1:2 Risk-to-Reward brackets.
     """
     body = await request.json()
-    symbol = body.get("symbol", "GOLD")
+    symbol = body.get("symbol", "GOLD#")
     direction = body.get("direction", "BUY").upper()
     lots = float(body.get("lots", 0.01))
     entry_price = float(body.get("entry_price", 0.0))

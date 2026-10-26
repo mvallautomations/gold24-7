@@ -22,7 +22,7 @@ from agents.hermes.client import HermesClient
 logger = logging.getLogger(__name__)
 
 
-SYSTEM_PROMPT = """You are Hermes 3, an elite quantitative trading mentor, risk manager, and loss mitigation critic for a live XM MT5 trading account (XMGlobal-MT5 9, Login: 336888981, Leverage: 1:100).
+SYSTEM_PROMPT = """You are Hermes 3, an elite quantitative trading mentor, risk manager, and loss mitigation critic for a live XM MT5 trading account (XMGlobal-MT5 2, Login: 169588864, Leverage: 1:500).
 Your core directives:
 1. Real money is on the line. NEVER mention "paper", "paper account", "virtual capital", or "ENTER_PAPER".
 2. Prioritize capital preservation, mitigating floating drawdown on live open positions, and cutting toxic exposure.
@@ -73,7 +73,7 @@ class HermesMarketInterpreter:
             for p in open_positions:
                 pos_context += f"- {p.get('side')} {p.get('lots', 0.01)} {p.get('symbol')} @ {p.get('entry_price')} (SL: {p.get('stop_loss', 0.0)}, Float PnL: ${p.get('unrealized_pnl', 0.0)})\n"
 
-        acc_login = (account_stats or {}).get("account_login", "336888981")
+        acc_login = (account_stats or {}).get("account_login", "169588864")
         prompt = f"""
 ANALYZE CANDIDATE SETUP FOR XM MT5 ACCOUNT {acc_login}:
 - Symbol: {signal.symbol_resolved} (Broker: {signal.broker_name})
@@ -176,10 +176,10 @@ Evaluate setup quality and loss mitigation in valid JSON adhering to schema:
             bal = account_stats.get("balance", 1874.19)
             eq = account_stats.get("equity", 1874.19)
             unrl = account_stats.get("unrealized_pnl", 0.0)
-            acc_num = account_stats.get("account_login", "336888981")
-            acc_summary = f"\nXM MT5 Account Metrics: Balance: ${bal:.2f}, Equity: ${eq:.2f}, Total Floating PnL: ${unrl:.2f} (Leverage 1:100)"
+            acc_num = account_stats.get("account_login", "169588864")
+            acc_summary = f"\nXM MT5 Account Metrics: Balance: ${bal:.2f}, Equity: ${eq:.2f}, Total Floating PnL: ${unrl:.2f} (Leverage 1:500)"
 
-        acc_num = (account_stats or {}).get("account_login", "336888981")
+        acc_num = (account_stats or {}).get("account_login", "169588864")
         prompt = f"""You are Hermes 3, elite quantitative mentor and loss mitigation risk manager for XM MT5 account {acc_num}.
 Analyze the live market state and open trades for {symbol_res.resolved} ({symbol_res.requested}, Broker: {symbol_res.broker}):
 - Live Current Price: {curr_price}
@@ -310,7 +310,7 @@ Output strictly valid JSON with this exact structure:
         """
         Specialized audit of open live positions to formulate concrete loss mitigation instructions.
         """
-        acc_num = account_stats.get("account_login", "336888981") if account_stats else "336888981"
+        acc_num = account_stats.get("account_login", "169588864") if account_stats else "169588864"
         if not open_positions:
             return {
                 "risk_level": "STABLE",

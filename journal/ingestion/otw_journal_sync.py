@@ -3,6 +3,7 @@ OpenTraderWorld Journal Ingestion: Ingests paper trades and simulation signals
 directly into the local OpenTraderWorld PostgreSQL database and journal ledger.
 """
 
+import time
 from typing import Optional, Dict, Any, List
 import uuid
 import json
@@ -23,6 +24,8 @@ class OTWJournalIngestion:
     into OpenTraderWorld's institutional trading journal tables.
     """
 
+    _last_failed_time: float = 0.0
+
     def __init__(
         self,
         db_url: Optional[str] = None,
@@ -32,15 +35,26 @@ class OTWJournalIngestion:
         self.category_id = category_id or config.OTW_DEFAULT_CATEGORY_ID
 
     def get_connection(self):
+        if time.time() - OTWJournalIngestion._last_failed_time < 30.0:
+            raise ConnectionError("OTW Database offline (cached)")
         try:
-            return psycopg2.connect(self.db_url, connect_timeout=3)
+            return psycopg2.connect(self.db_url, connect_timeout=1)
         except Exception:
             if "172.28.53.2" in self.db_url:
                 alt = self.db_url.replace("172.28.53.2", "172.28.53.3")
-                return psycopg2.connect(alt, connect_timeout=3)
+                try:
+                    return psycopg2.connect(alt, connect_timeout=1)
+                except Exception:
+                    OTWJournalIngestion._last_failed_time = time.time()
+                    raise
             elif "172.28.53.3" in self.db_url:
                 alt = self.db_url.replace("172.28.53.3", "172.28.53.2")
-                return psycopg2.connect(alt, connect_timeout=3)
+                try:
+                    return psycopg2.connect(alt, connect_timeout=1)
+                except Exception:
+                    OTWJournalIngestion._last_failed_time = time.time()
+                    raise
+            OTWJournalIngestion._last_failed_time = time.time()
             raise
 
     def ingest_closed_trade(self, position: PaperPosition, coach_feedback: str = "") -> Optional[str]:

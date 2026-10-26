@@ -129,3 +129,22 @@ Consolidate `projects/Stock-Trading` MT5 tools (Checklist, Indicators, Experts, 
   - Started Autonomous Live Daemon (`scripts/daemon_runner.py`, task-326) monitoring real-time active positions and M1 bars.
   - Verified JavaScript syntax in [dashboard/templates/index.html](dashboard/templates/index.html) with 0 errors across all 77 DOM IDs and endpoints.
   - Launched Windows browser directly to `http://localhost:8585`.
+
+## Session Resumed (2026-10-26 07:42 UTC+8)
+- **Account Verified**: XM MT5 Account `169588864` (`XMGlobal-MT5 2`, Leverage 1:500).
+- **Starting Metrics**:
+  - Open Positions: **3** (Ticket #2354412275 BUY 0.01 @ 4000.61, Ticket #2354412875 BUY 0.02 @ 4001.86, Ticket #2354419002 SELL 0.01 @ 3995.07)
+  - Balance: **$524.36**
+  - Equity: **$514.17**
+  - Unrealized PnL: **-$10.19**
+- **Subsystem Health**:
+  - XM MT5 Windows Bridge: **ONLINE** (Port 8082, PID 25328, verified streaming live ticks and rates)
+  - GOLD24-7 Dashboard: **ONLINE** (`http://localhost:8585`)
+- **Symbols Configured**:
+  - Primary default active symbol updated to **`GOLD#`** ($4,000.20/oz).
+  - Added full 24/7 continuous market schedule & alias support for **`GOLD24-7#`** ($3,999.09/oz).
+  - Added dedicated one-click switcher chips for `GOLD#` and `GOLD24-7#` in dashboard header.
+- **Verification**:
+  - All 55 automated unit, contract, characterization, and smoke test suites passing (`55 passed in 1.24s`).
+  - Windows host browser verified loading dashboard via `http://localhost:8585` (HTTP 200 OK).
+

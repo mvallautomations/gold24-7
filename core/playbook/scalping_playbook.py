@@ -82,6 +82,10 @@ RECOMMENDED_MARKETS: Dict[str, MarketScheduleConfig] = {
         symbol="GOLD#", asset_class="COMMODITIES", name="Spot Gold (XM Ultra Low)",
         open_hour_est=9, open_minute_est=30, duration_hours=2.0, tick_size=0.01, pip_factor=10.0
     ),
+    "GOLD24-7#": MarketScheduleConfig(
+        symbol="GOLD24-7#", asset_class="COMMODITIES", name="Spot Gold 24/7 (XM)",
+        open_hour_est=0, open_minute_est=0, duration_hours=24.0, is_24_7=True, tick_size=0.01, pip_factor=10.0
+    ),
     "TSLA": MarketScheduleConfig(
         symbol="TSLA", asset_class="EQUITIES", name="Tesla Inc.",
         open_hour_est=9, open_minute_est=30, duration_hours=2.0, tick_size=0.01, pip_factor=100.0

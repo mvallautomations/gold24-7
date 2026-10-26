@@ -953,13 +953,13 @@
     <div class="live-pulse-container">
       <div class="pulse-dot" id="liveDot"></div>
       <span style="font-weight: 700; color: var(--text-main);" id="streamStatusText">XM MT5 LIVE STREAM</span>
-      <span class="badge badge-live" id="badgeAccountMode">ACCOUNT: 336888981</span>
-      <span class="badge badge-cyan" id="badgeAccountServer">XMGlobal-MT5 9</span>
-      <span class="badge badge-gold">1:100 LEVERAGE</span>
+      <span class="badge badge-live" id="badgeAccountMode">ACCOUNT: 169588864</span>
+      <span class="badge badge-cyan" id="badgeAccountServer">XMGlobal-MT5 2</span>
+      <span class="badge badge-gold">1:500 LEVERAGE</span>
       <span class="badge badge-live">1-MIN SCALPING PLAYBOOK ARMED</span>
     </div>
     <div class="top-meta">
-      <span>Account: <strong id="ribbonAccount">336888981</strong></span>
+      <span>Account: <strong id="ribbonAccount">169588864</strong></span>
       <span>Latency: <strong id="ribbonPing" style="color: var(--accent-green);">~14ms</strong></span>
       <span>EST (NY): <strong id="ribbonTimeEST">—</strong></span>
       <span>Server UTC: <strong id="ribbonTimeUTC">—</strong></span>
@@ -976,14 +976,15 @@
         </h1>
         <!-- Fast Symbol Chips across Playbook Markets -->
         <div class="symbol-chips" id="symbolChips">
-          <button class="chip active" onclick="switchSymbol('GOLD')">🥇 GOLD</button>
-          <button class="chip" onclick="switchSymbol('TSLA')">🚗 TSLA</button>
-          <button class="chip" onclick="switchSymbol('NVDA')">🟢 NVDA</button>
-          <button class="chip" onclick="switchSymbol('QQQ')">💻 QQQ</button>
-          <button class="chip" onclick="switchSymbol('SPY')">📊 SPY</button>
-          <button class="chip" onclick="switchSymbol('AAPL')">🍎 AAPL</button>
-          <button class="chip" onclick="switchSymbol('BTCUSD#')">⚡ BTCUSD#</button>
-          <button class="chip" onclick="switchSymbol('EURUSD')">💶 EURUSD</button>
+          <button class="chip active" data-sym="GOLD#" onclick="switchSymbol('GOLD#')">🥇 GOLD#</button>
+          <button class="chip" data-sym="GOLD24-7#" onclick="switchSymbol('GOLD24-7#')">🌟 GOLD24-7#</button>
+          <button class="chip" data-sym="BTCUSD#" onclick="switchSymbol('BTCUSD#')">⚡ BTCUSD#</button>
+          <button class="chip" data-sym="TSLA" onclick="switchSymbol('TSLA')">🚗 TSLA</button>
+          <button class="chip" data-sym="NVDA" onclick="switchSymbol('NVDA')">🟢 NVDA</button>
+          <button class="chip" data-sym="QQQ" onclick="switchSymbol('QQQ')">💻 QQQ</button>
+          <button class="chip" data-sym="SPY" onclick="switchSymbol('SPY')">📊 SPY</button>
+          <button class="chip" data-sym="AAPL" onclick="switchSymbol('AAPL')">🍎 AAPL</button>
+          <button class="chip" data-sym="EURUSD" onclick="switchSymbol('EURUSD')">💶 EURUSD</button>
         </div>
       </div>
 
@@ -1027,7 +1028,7 @@
           <span>📈</span> R-Multiple Ledger & Journal (+R Yield)
         </button>
         <button class="tab-btn" id="tabPositions" onclick="switchTab('positions')">
-          <span>💼</span> Live MT5 Positions (336888981)
+          <span>💼</span> Live MT5 Positions (169588864)
         </button>
         <button class="tab-btn" id="tabMatrix" onclick="switchTab('matrix')">
           <span>📊</span> 6-Timeframe Deck
@@ -1449,14 +1450,14 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- TAB 4: LIVE POSITIONS (336888981)                              -->
+    <!-- TAB 4: LIVE POSITIONS (169588864)                              -->
     <!-- ============================================================== -->
     <div class="view-content" id="viewPositions">
       <div class="grid-kpis">
         <div class="kpi-card">
           <div class="kpi-label">Live MT5 Balance</div>
-          <div class="kpi-val" id="ledgerBalance">$1,874.19</div>
-          <div class="kpi-sub">Account: 336888981 (USD)</div>
+          <div class="kpi-val" id="ledgerBalance">$524.36</div>
+          <div class="kpi-sub">Account: 169588864 (USD)</div>
         </div>
         <div class="kpi-card">
           <div class="kpi-label">Live MT5 Equity</div>
@@ -1470,8 +1471,8 @@
         </div>
         <div class="kpi-card">
           <div class="kpi-label">Free Margin</div>
-          <div class="kpi-val" id="ledgerFreeMargin" style="color: var(--accent-green);">$1,874.19</div>
-          <div class="kpi-sub">1:100 XM Global Leverage</div>
+          <div class="kpi-val" id="ledgerFreeMargin" style="color: var(--accent-green);">$524.36</div>
+          <div class="kpi-sub">1:500 XM Global Leverage</div>
         </div>
       </div>
 
@@ -1492,7 +1493,7 @@
             </tr>
           </thead>
           <tbody id="openPositionsTbody">
-            <tr><td colspan="10" style="text-align: center; padding: 2rem;">No active open positions on MT5 account 336888981. Flat & capital protected.</td></tr>
+            <tr><td colspan="10" style="text-align: center; padding: 2rem;">No active open positions on MT5 account 169588864. Flat & capital protected.</td></tr>
           </tbody>
         </table>
       </div>
@@ -1515,7 +1516,7 @@
       <div style="background: var(--surface-1); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.5rem;">
         <h3 style="font-family: var(--font-mono); color: var(--accent-gold); margin-bottom: 0.6rem;">🧠 HERMES 3:8B LOCAL GPU RISK AUDITOR</h3>
         <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
-          Hermes 3 runs locally on your NVIDIA GeForce RTX 4060 GPU via Ollama. It actively audits XM MT5 Demo Account <strong style="color: var(--accent-gold);">336888981</strong>, validates each 1-minute execution weapon against the 10-Point Scorecard, enforces the invariant 1:2 R:R bracket, and prevents overtrading.
+          Hermes 3 runs locally on your NVIDIA GeForce RTX 4060 GPU via Ollama. It actively audits XM MT5 Demo Account <strong style="color: var(--accent-gold);">169588864</strong>, validates each 1-minute execution weapon against the 10-Point Scorecard, enforces the invariant 1:2 R:R bracket, and prevents overtrading.
         </p>
         <pre id="hermesLabFullThesis" style="background: #060911; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 1rem; color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.74rem; overflow-x: auto; max-height: 400px;">
 Awaiting manual audit trigger...
@@ -1732,7 +1733,7 @@ Awaiting manual audit trigger...
 
   <script>
     // State Variables
-    let activeSymbol = 'GOLD';
+    let activeSymbol = 'GOLD#';
     let activeTimeframe = 'M1';
     let isStreaming = true;
     let pollIntervalMs = 5000;
@@ -1787,7 +1788,8 @@ Awaiting manual audit trigger...
     function switchSymbol(sym) {
       activeSymbol = sym;
       document.querySelectorAll('#symbolChips .chip').forEach(c => {
-        if (c.innerText.includes(sym.replace('#', ''))) {
+        const target = c.getAttribute('data-sym') || c.innerText.trim();
+        if (target === sym) {
           c.classList.add('active');
         } else {
           c.classList.remove('active');
@@ -1994,7 +1996,15 @@ Awaiting manual audit trigger...
     function updateUIWithData(data, latency) {
       document.getElementById('ribbonPing').innerText = `~${latency}ms`;
       document.getElementById('ribbonTimeUTC').innerText = data.server_time || '—';
-      if (data.account_login) document.getElementById('ribbonAccount').innerText = data.account_login;
+      if (data.account_login) {
+        document.getElementById('ribbonAccount').innerText = data.account_login;
+        const b = document.getElementById('badgeAccountMode');
+        if (b) b.innerText = `ACCOUNT: ${data.account_login}`;
+      }
+      if (data.account_server) {
+        const s = document.getElementById('badgeAccountServer');
+        if (s) s.innerText = data.account_server;
+      }
       document.getElementById('heroSymbol').innerText = data.symbol;
       document.getElementById('heroBroker').innerText = `${data.broker} (${data.requested})`;
 
@@ -2688,7 +2698,7 @@ Awaiting manual audit trigger...
       const tbody = document.getElementById('openPositionsTbody');
       if (!tbody) return;
       if (!positions || positions.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; color: var(--text-dim); padding: 2rem;">No active open positions on MT5 account 336888981. Flat & capital protected.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; color: var(--text-dim); padding: 2rem;">No active open positions on MT5 account 169588864. Flat & capital protected.</td></tr>';
         return;
       }
       tbody.innerHTML = '';

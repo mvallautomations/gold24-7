@@ -167,13 +167,13 @@ class MT5ToOTWSync:
         unrealized_pnl = sum(p.get("unrealized_pnl", 0) for p in open_pos)
 
         return {
-            "account_login": acc.get("login", 336888981),
-            "server": acc.get("server", "XMGlobal-MT5 9"),
+            "account_login": acc.get("login", 169588864),
+            "server": acc.get("server", "XMGlobal-MT5 2"),
             "company": acc.get("company", "XM Global Limited"),
-            "leverage": acc.get("leverage", 100),
+            "leverage": acc.get("leverage", 500),
             "currency": acc.get("currency", "USD"),
-            "balance": acc.get("balance", 1874.19),
-            "equity": acc.get("equity", 1874.19),
+            "balance": acc.get("balance", 524.36),
+            "equity": acc.get("equity", 524.36),
             "total_closed_trades": total_trades,
             "win_rate": round(win_rate, 1),
             "profit_factor": round(profit_factor, 2),
@@ -312,7 +312,7 @@ class MT5ToOTWSync:
                     fields = {
                         "environment": "LIVE_ACCOUNT",
                         "broker": "XM Global",
-                        "account_id": str(self.account_login or "336888981"),
+                        "account_id": str(self.account_login or "169588864"),
                         "position_id": t["position_id"],
                         "realized_pnl": t["net_pnl"],
                         "net_pnl": t["net_pnl"],

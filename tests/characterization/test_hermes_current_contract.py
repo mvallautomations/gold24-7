@@ -26,7 +26,7 @@ class StubHermesClient:
 
 def test_current_prompt_hash_and_interpreter_response_schema():
     assert hashlib.sha256(SYSTEM_PROMPT.encode("utf-8")).hexdigest() == (
-        "229cf019a6b064f9911cf73cc327568a944c8f09cf585c531f3410ee38d29d43"
+        "6f0a074ecc36f0c3329c2e9cbf2f74c2f44f5284b61519981b7f0f3aaed32189"
     )
 
     expected_keys = {
